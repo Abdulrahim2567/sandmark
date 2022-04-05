@@ -35,10 +35,6 @@ jobs:
 
       - run: opam install . --deps-only --with-test
 
-      - run: opam exec -- dune build
-
-      - run: opam exec -- dune runtest
-
       # Runs a set of commands using the runners shell
       - name: 5.0.0+stable
         run: |
