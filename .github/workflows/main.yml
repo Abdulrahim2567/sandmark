@@ -21,16 +21,6 @@ jobs:
           - ubuntu-latest
         ocaml-compiler:
           - 4.14.x
-        include:
-          - os: ubuntu-latest
-            ocaml-compiler: ocaml-variants.4.14.0+options,ocaml-option-32bit
-          - os: ubuntu-latest
-            ocaml-compiler: ocaml-variants.4.14.0+options,ocaml-option-flambda,ocaml-option-musl,ocaml-option-static
-          - os: ubuntu-latest
-            ocaml-compiler: ocaml-variants.4.12.0+domains
-            opam-repositories: |
-              multicore: https://github.com/ocaml-multicore/multicore-opam.git
-              default: https://github.com/ocaml/opam-repository.git
     runs-on: ${{ matrix.os }}
     # Steps represent a sequence of tasks that will be executed as part of the job
     steps:
@@ -50,7 +40,7 @@ jobs:
           export ITER=1
           export OPAM_DISABLE_SANDBOXING=true
           TAG='"run_in_ci"' make run_config_filtered.json
-          USE_SYS_DUNE_HACK=1 RUN_CONFIG_JSON=run_config_filtered.json make ocaml-versions/4.14.x+stable.bench
+          USE_SYS_DUNE_HACK=1 RUN_CONFIG_JSON=run_config_filtered.json make ocaml-versions/5.0.0+stable.bench
           ls _results
           cat _results/*
           
@@ -68,7 +58,7 @@ jobs:
           TAG='"run_in_ci"' make multicore_parallel_run_config_filtered.json
           TAG='"macro_bench"' make multicore_parallel_run_config_filtered_filtered.json
           make multicore_parallel_run_config_filtered_filtered_2domains.json
-          USE_SYS_DUNE_HACK=1 BUILD_BENCH_TARGET=multibench_parallel RUN_CONFIG_JSON=multicore_parallel_run_config_filtered_filtered_2domains.json make ocaml-versions/4.14.x+stable.bench
+          USE_SYS_DUNE_HACK=1 BUILD_BENCH_TARGET=multibench_parallel RUN_CONFIG_JSON=multicore_parallel_run_config_filtered_filtered_2domains.json make ocaml-versions/5.0.0+stable.bench
           ls _results
           cat _results/*
           
@@ -84,7 +74,7 @@ jobs:
           export ITER=1
           export OPAM_DISABLE_SANDBOXING=true
           TAG='"run_in_ci"' make run_config_filtered.json
-          USE_SYS_DUNE_HACK=1 RUN_CONFIG_JSON=run_config_filtered.json make ocaml-versions/4.14.x+trunk.bench
+          USE_SYS_DUNE_HACK=1 RUN_CONFIG_JSON=run_config_filtered.json make ocaml-versions/5.0.0+trunk.bench
           ls _results
           cat _results/*
           
@@ -102,7 +92,7 @@ jobs:
           TAG='"run_in_ci"' make multicore_parallel_run_config_filtered.json
           TAG='"macro_bench"' make multicore_parallel_run_config_filtered_filtered.json
           make multicore_parallel_run_config_filtered_filtered_2domains.json
-          USE_SYS_DUNE_HACK=1 BUILD_BENCH_TARGET=multibench_parallel RUN_CONFIG_JSON=multicore_parallel_run_config_filtered_filtered_2domains.json make ocaml-versions/4.14.x+trunk.bench
+          USE_SYS_DUNE_HACK=1 BUILD_BENCH_TARGET=multibench_parallel RUN_CONFIG_JSON=multicore_parallel_run_config_filtered_filtered_2domains.json make ocaml-versions/5.0.0+trunk.bench
           ls _results
           cat _results/*
           
