@@ -18,25 +18,28 @@ jobs:
       fail-fast: false
       matrix:
         os:
+          - macos-latest
           - ubuntu-latest
+          - windows-latest
         ocaml-compiler:
-          - 4.14.x
-        include:
-          - os: ubuntu-latest
-            ocaml-compiler: ocaml-variants.4.14.0+options,ocaml-option-32bit
-          - os: ubuntu-latest
-            ocaml-compiler: ocaml-variants.4.14.0+options,ocaml-option-flambda,ocaml-option-musl,ocaml-option-static
-          - os: ubuntu-latest
-            ocaml-compiler: ocaml-variants.4.12.0+domains
-            opam-repositories: |
-              multicore: https://github.com/ocaml-multicore/multicore-opam.git
-              default: https://github.com/ocaml/opam-repository.git
+          - 4.13.x
 
     runs-on: ${{ matrix.os }}
-    # Steps represent a sequence of tasks that will be executed as part of the job
+
     steps:
-      # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
-      - uses: actions/checkout@v3
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Use OCaml ${{ matrix.ocaml-compiler }}
+        uses: ocaml/setup-ocaml@v2
+        with:
+          ocaml-compiler: ${{ matrix.ocaml-compiler }}
+
+      - run: opam install . --deps-only --with-test
+
+      - run: opam exec -- dune build
+
+      - run: opam exec -- dune runtest
 
       # Runs a set of commands using the runners shell
       - name: 5.0.0+stable
