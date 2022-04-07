@@ -47,8 +47,11 @@ jobs:
           eval $(opam env)
           export ITER=1
           export OPAM_DISABLE_SANDBOXING=true
+          echo MAKE_RUN
           TAG='"run_in_ci"' make run_config_filtered.json
+          echo MAKE_OCAML
           USE_SYS_DUNE_HACK=1 RUN_CONFIG_JSON=run_config_filtered.json make ocaml-versions/5.0.0+stable.bench
+          echo RESULTS
           ls _results
           cat _results/*
           
