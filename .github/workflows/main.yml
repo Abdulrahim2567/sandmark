@@ -46,9 +46,8 @@ jobs:
           eval $(opam env)
           export ITER=1
           export OPAM_DISABLE_SANDBOXING=true
-          sed 's/--cpu-list 5/--cpu-list 1/g' run_config.json
           TAG='"run_in_ci"' make run_config_filtered.json
-          sed 's/--cpu-list 5/--cpu-list 1/g' run_config.json
+          sed -i 's/--cpu-list 5/--cpu-list 1/g' run_config_filtered.json
           USE_SYS_DUNE_HACK=1 RUN_CONFIG_JSON=run_config_filtered.json make ocaml-versions/5.0.0+stable.bench
           sed 's/--cpu-list 5/--cpu-list 1/g' run_config.json
           ls _results
@@ -65,6 +64,7 @@ jobs:
           export ITER=1
           export OPAM_DISABLE_SANDBOXING=true
           TAG='"run_in_ci"' make multicore_parallel_run_config_filtered.json
+          sed -i 's/--cpu-list 5/--cpu-list 1/g' run_config_filtered.json
           TAG='"macro_bench"' make multicore_parallel_run_config_filtered_filtered.json
           make multicore_parallel_run_config_filtered_filtered_2domains.json
           USE_SYS_DUNE_HACK=1 BUILD_BENCH_TARGET=multibench_parallel RUN_CONFIG_JSON=multicore_parallel_run_config_filtered_filtered_2domains.json make ocaml-versions/5.0.0+stable.bench
@@ -82,6 +82,7 @@ jobs:
           export ITER=1
           export OPAM_DISABLE_SANDBOXING=true
           TAG='"run_in_ci"' make run_config_filtered.json
+          sed -i 's/--cpu-list 5/--cpu-list 1/g' run_config_filtered.json
           USE_SYS_DUNE_HACK=1 RUN_CONFIG_JSON=run_config_filtered.json make ocaml-versions/5.0.0+trunk.bench
           ls _results
           cat _results/*
@@ -97,6 +98,7 @@ jobs:
           export ITER=1
           export OPAM_DISABLE_SANDBOXING=true
           TAG='"run_in_ci"' make multicore_parallel_run_config_filtered.json
+          sed -i 's/--cpu-list 5/--cpu-list 1/g' multicore_parallel_run_config_filtered.json
           TAG='"macro_bench"' make multicore_parallel_run_config_filtered_filtered.json
           make multicore_parallel_run_config_filtered_filtered_2domains.json
           USE_SYS_DUNE_HACK=1 BUILD_BENCH_TARGET=multibench_parallel RUN_CONFIG_JSON=multicore_parallel_run_config_filtered_filtered_2domains.json make ocaml-versions/5.0.0+trunk.bench
@@ -106,6 +108,7 @@ jobs:
       - name: test_notebooks
         run: |
           sudo apt-get update && sudo apt-get -y install wget pkg-config libgmp-dev m4 libdw-dev jq python3-pip jo
+          python3 -m pip install markupsafe==2.0.1
           export PATH=$PATH:/home/opam/.local/bin
           pip3 install jupyter nbconvert seaborn pandas
           cd notebooks/sequential
